@@ -1,29 +1,25 @@
 package com.viniciusmaia.workshopmongo.resources;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.viniciusmaia.workshopmongo.domain.User;
+import com.viniciusmaia.workshopmongo.services.UserService;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.viniciusmaia.workshopmongo.domain.User;
-
-@RestController //indica que a classe será um recurso rest
-@RequestMapping(value = "users") //indica o caminho do end point
+@RestController
+@RequestMapping(value = "/users") 
 public class UserResource {
 
-	//retorna uma lista de usuários
-	@RequestMapping(method = RequestMethod.GET) //ou @GetMapping
+	@Autowired
+	private UserService service;
+	
+	@GetMapping
 	public ResponseEntity<List<User>> findAll() {
 		
-		User maria = new User("1", "Maria Brown", "maria@gmail.com");
-		User alex = new User("2", "Alex Green", "alex.com");
-		List<User> list = new ArrayList<>();
-		list.addAll(Arrays.asList(maria,alex));
-		
+		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 }
